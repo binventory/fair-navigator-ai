@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
 import { getFair, updateFair, setFairStatus, deleteFair } from "@/lib/fairs.functions";
+import type { UpdateFairInput } from "@/lib/fairs.functions";
 import { listExhibitors, deleteExhibitor } from "@/lib/exhibitors.functions";
 import { FairForm, toIsoOrNull, fromIsoToLocal } from "@/components/FairForm";
 import { Button } from "@/components/ui/button";
@@ -45,7 +46,7 @@ function FairDetail() {
   });
 
   const updateMut = useMutation({
-    mutationFn: (data: Parameters<typeof updateFn>[0]["data"]) =>
+    mutationFn: (data: UpdateFairInput) =>
       updateFn({ data }),
     onSuccess: () => {
       toast.success("Saved");

@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { getExhibitor, updateExhibitor } from "@/lib/exhibitors.functions";
+import type { UpdateExhibitorInput } from "@/lib/exhibitors.functions";
 import { ExhibitorForm } from "@/components/ExhibitorForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -27,7 +28,7 @@ function EditExhibitor() {
   });
 
   const mut = useMutation({
-    mutationFn: (data: Parameters<typeof updateFn>[0]["data"]) =>
+    mutationFn: (data: UpdateExhibitorInput) =>
       updateFn({ data }),
     onSuccess: () => {
       toast.success("Saved");

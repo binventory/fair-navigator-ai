@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { createExhibitor } from "@/lib/exhibitors.functions";
+import type { CreateExhibitorInput } from "@/lib/exhibitors.functions";
 import { ExhibitorForm } from "@/components/ExhibitorForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -18,7 +19,7 @@ function NewExhibitor() {
   const navigate = useNavigate();
 
   const mut = useMutation({
-    mutationFn: (data: Parameters<typeof createFn>[0]["data"]) =>
+    mutationFn: (data: CreateExhibitorInput) =>
       createFn({ data }),
     onSuccess: () => {
       toast.success("Exhibitor added");

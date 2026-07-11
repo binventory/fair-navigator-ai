@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { getMyOrganizations } from "@/lib/org.functions";
 import { createFair } from "@/lib/fairs.functions";
+import type { CreateFairInput } from "@/lib/fairs.functions";
 import { FairForm, toIsoOrNull } from "@/components/FairForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -30,7 +31,7 @@ function NewFair() {
   const effectiveOrgId = orgId ?? orgs[0]?.org.id ?? null;
 
   const mut = useMutation({
-    mutationFn: (payload: Parameters<typeof createFn>[0]["data"]) =>
+    mutationFn: (payload: CreateFairInput) =>
       createFn({ data: payload }),
     onSuccess: (row) => {
       toast.success("Fair created");
