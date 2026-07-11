@@ -15,6 +15,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedFairsNewRouteImport } from './routes/_authenticated/fairs.new'
 import { Route as AuthenticatedFairsFairIdRouteImport } from './routes/_authenticated/fairs.$fairId'
+import { Route as AuthenticatedFairsFairIdScheduleRouteImport } from './routes/_authenticated/fairs.$fairId.schedule'
+import { Route as AuthenticatedFairsFairIdMapRouteImport } from './routes/_authenticated/fairs.$fairId.map'
 import { Route as AuthenticatedFairsFairIdExhibitorsNewRouteImport } from './routes/_authenticated/fairs.$fairId.exhibitors.new'
 import { Route as AuthenticatedFairsFairIdExhibitorsExhibitorIdRouteImport } from './routes/_authenticated/fairs.$fairId.exhibitors.$exhibitorId'
 
@@ -48,6 +50,18 @@ const AuthenticatedFairsFairIdRoute =
     path: '/fairs/$fairId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedFairsFairIdScheduleRoute =
+  AuthenticatedFairsFairIdScheduleRouteImport.update({
+    id: '/schedule',
+    path: '/schedule',
+    getParentRoute: () => AuthenticatedFairsFairIdRoute,
+  } as any)
+const AuthenticatedFairsFairIdMapRoute =
+  AuthenticatedFairsFairIdMapRouteImport.update({
+    id: '/map',
+    path: '/map',
+    getParentRoute: () => AuthenticatedFairsFairIdRoute,
+  } as any)
 const AuthenticatedFairsFairIdExhibitorsNewRoute =
   AuthenticatedFairsFairIdExhibitorsNewRouteImport.update({
     id: '/exhibitors/new',
@@ -67,6 +81,8 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/fairs/$fairId': typeof AuthenticatedFairsFairIdRouteWithChildren
   '/fairs/new': typeof AuthenticatedFairsNewRoute
+  '/fairs/$fairId/map': typeof AuthenticatedFairsFairIdMapRoute
+  '/fairs/$fairId/schedule': typeof AuthenticatedFairsFairIdScheduleRoute
   '/fairs/$fairId/exhibitors/$exhibitorId': typeof AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute
   '/fairs/$fairId/exhibitors/new': typeof AuthenticatedFairsFairIdExhibitorsNewRoute
 }
@@ -76,6 +92,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/fairs/$fairId': typeof AuthenticatedFairsFairIdRouteWithChildren
   '/fairs/new': typeof AuthenticatedFairsNewRoute
+  '/fairs/$fairId/map': typeof AuthenticatedFairsFairIdMapRoute
+  '/fairs/$fairId/schedule': typeof AuthenticatedFairsFairIdScheduleRoute
   '/fairs/$fairId/exhibitors/$exhibitorId': typeof AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute
   '/fairs/$fairId/exhibitors/new': typeof AuthenticatedFairsFairIdExhibitorsNewRoute
 }
@@ -87,6 +105,8 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/fairs/$fairId': typeof AuthenticatedFairsFairIdRouteWithChildren
   '/_authenticated/fairs/new': typeof AuthenticatedFairsNewRoute
+  '/_authenticated/fairs/$fairId/map': typeof AuthenticatedFairsFairIdMapRoute
+  '/_authenticated/fairs/$fairId/schedule': typeof AuthenticatedFairsFairIdScheduleRoute
   '/_authenticated/fairs/$fairId/exhibitors/$exhibitorId': typeof AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute
   '/_authenticated/fairs/$fairId/exhibitors/new': typeof AuthenticatedFairsFairIdExhibitorsNewRoute
 }
@@ -98,6 +118,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/fairs/$fairId'
     | '/fairs/new'
+    | '/fairs/$fairId/map'
+    | '/fairs/$fairId/schedule'
     | '/fairs/$fairId/exhibitors/$exhibitorId'
     | '/fairs/$fairId/exhibitors/new'
   fileRoutesByTo: FileRoutesByTo
@@ -107,6 +129,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/fairs/$fairId'
     | '/fairs/new'
+    | '/fairs/$fairId/map'
+    | '/fairs/$fairId/schedule'
     | '/fairs/$fairId/exhibitors/$exhibitorId'
     | '/fairs/$fairId/exhibitors/new'
   id:
@@ -117,6 +141,8 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/fairs/$fairId'
     | '/_authenticated/fairs/new'
+    | '/_authenticated/fairs/$fairId/map'
+    | '/_authenticated/fairs/$fairId/schedule'
     | '/_authenticated/fairs/$fairId/exhibitors/$exhibitorId'
     | '/_authenticated/fairs/$fairId/exhibitors/new'
   fileRoutesById: FileRoutesById
@@ -171,6 +197,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFairsFairIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/fairs/$fairId/schedule': {
+      id: '/_authenticated/fairs/$fairId/schedule'
+      path: '/schedule'
+      fullPath: '/fairs/$fairId/schedule'
+      preLoaderRoute: typeof AuthenticatedFairsFairIdScheduleRouteImport
+      parentRoute: typeof AuthenticatedFairsFairIdRoute
+    }
+    '/_authenticated/fairs/$fairId/map': {
+      id: '/_authenticated/fairs/$fairId/map'
+      path: '/map'
+      fullPath: '/fairs/$fairId/map'
+      preLoaderRoute: typeof AuthenticatedFairsFairIdMapRouteImport
+      parentRoute: typeof AuthenticatedFairsFairIdRoute
+    }
     '/_authenticated/fairs/$fairId/exhibitors/new': {
       id: '/_authenticated/fairs/$fairId/exhibitors/new'
       path: '/exhibitors/new'
@@ -189,12 +229,17 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedFairsFairIdRouteChildren {
+  AuthenticatedFairsFairIdMapRoute: typeof AuthenticatedFairsFairIdMapRoute
+  AuthenticatedFairsFairIdScheduleRoute: typeof AuthenticatedFairsFairIdScheduleRoute
   AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute: typeof AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute
   AuthenticatedFairsFairIdExhibitorsNewRoute: typeof AuthenticatedFairsFairIdExhibitorsNewRoute
 }
 
 const AuthenticatedFairsFairIdRouteChildren: AuthenticatedFairsFairIdRouteChildren =
   {
+    AuthenticatedFairsFairIdMapRoute: AuthenticatedFairsFairIdMapRoute,
+    AuthenticatedFairsFairIdScheduleRoute:
+      AuthenticatedFairsFairIdScheduleRoute,
     AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute:
       AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute,
     AuthenticatedFairsFairIdExhibitorsNewRoute:

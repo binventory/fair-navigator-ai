@@ -115,6 +115,12 @@ function FairDetail() {
           )}
         </div>
         <div className="flex flex-wrap gap-2">
+          <Link to="/fairs/$fairId/map" params={{ fairId }}>
+            <Button variant="outline">Floor plan</Button>
+          </Link>
+          <Link to="/fairs/$fairId/schedule" params={{ fairId }}>
+            <Button variant="outline">Schedule</Button>
+          </Link>
           <Button
             variant={published ? "outline" : "default"}
             onClick={() => statusMut.mutate(published ? "draft" : "published")}
