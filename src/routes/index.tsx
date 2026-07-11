@@ -1,24 +1,49 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "ExpoAI — Trade fair management, GDPR-compliant" },
+      {
+        name: "description",
+        content:
+          "ExpoAI is a multi-tenant PWA for organizing trade fairs: exhibitors, floor-plan hotspots, schedules and AI-powered visitor guidance.",
+      },
+      { property: "og:title", content: "ExpoAI — Trade fair management" },
+      {
+        property: "og:description",
+        content:
+          "Multi-tenant, GDPR-compliant trade-fair platform with an AI visitor assistant.",
+      },
+    ],
+  }),
+  component: Landing,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Landing() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted/30">
+      <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6">
+        <span className="text-lg font-semibold tracking-tight">ExpoAI</span>
+        <Link to="/auth">
+          <Button size="sm">Sign in</Button>
+        </Link>
+      </header>
+      <main className="mx-auto max-w-3xl px-4 py-24 text-center">
+        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+          Trade fairs, organized.
+        </h1>
+        <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
+          A multi-tenant, GDPR-compliant platform for organizing exhibitors,
+          floor plans and schedules — with an AI assistant for your visitors.
+        </p>
+        <div className="mt-8 flex justify-center gap-3">
+          <Link to="/auth">
+            <Button size="lg">Get started</Button>
+          </Link>
+        </div>
+      </main>
     </div>
   );
 }
