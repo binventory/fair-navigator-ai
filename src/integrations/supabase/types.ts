@@ -416,6 +416,7 @@ export type Database = {
           created_at: string
           description: string | null
           ends_at: string | null
+          exhibitor_id: string | null
           fair_id: string
           id: string
           location: string | null
@@ -428,6 +429,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           ends_at?: string | null
+          exhibitor_id?: string | null
           fair_id: string
           id?: string
           location?: string | null
@@ -440,6 +442,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           ends_at?: string | null
+          exhibitor_id?: string | null
           fair_id?: string
           id?: string
           location?: string | null
@@ -449,6 +452,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "schedule_items_exhibitor_id_fkey"
+            columns: ["exhibitor_id"]
+            isOneToOne: false
+            referencedRelation: "exhibitors"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "schedule_items_fair_id_fkey"
             columns: ["fair_id"]
