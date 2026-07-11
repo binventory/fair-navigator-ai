@@ -29,7 +29,7 @@ export const getExhibitor = createServerFn({ method: "GET" })
     return row;
   });
 
-const exhibitorInput = z.object({
+export const exhibitorInputSchema = z.object({
   company_name: z.string().trim().min(1).max(200),
   booth_code: z.string().trim().min(1).max(50),
   category: z.string().trim().max(100).optional().nullable(),
@@ -45,7 +45,7 @@ const exhibitorInput = z.object({
 export const createExhibitor = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
-    exhibitorInput.extend({ fair_id: z.string().uuid() }).parse(d),
+    exhibitorInputSchema.extend({ fair_id: z.string().uuid() }).parse(d),
   )
   .handler(async ({ data, context }) => {
     const { data: fair, error: fairErr } = await context.supabase
@@ -92,7 +92,7 @@ export const createExhibitor = createServerFn({ method: "POST" })
 export const updateExhibitor = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
-    exhibitorInput.extend({ id: z.string().uuid() }).parse(d),
+    exhibitorInputSchema.extend({ id: z.string().uuid() }).parse(d),
   )
   .handler(async ({ data, context }) => {
     const { id, contact_name, contact_email, contact_phone, notes, ...patch } = data;
@@ -135,3 +135,6 @@ export const deleteExhibitor = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+export type CreateExhibitorInput = z.infer<typeof exhibitorInputSchema> & { fair_id: string };
+export type UpdateExhibitorInput = z.infer<typeof exhibitorInputSchema> & { id: string };

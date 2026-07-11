@@ -9,38 +9,140 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedFairsNewRouteImport } from './routes/_authenticated/fairs.new'
+import { Route as AuthenticatedFairsFairIdRouteImport } from './routes/_authenticated/fairs.$fairId'
+import { Route as AuthenticatedFairsFairIdExhibitorsNewRouteImport } from './routes/_authenticated/fairs.$fairId.exhibitors.new'
+import { Route as AuthenticatedFairsFairIdExhibitorsExhibitorIdRouteImport } from './routes/_authenticated/fairs.$fairId.exhibitors.$exhibitorId'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFairsNewRoute = AuthenticatedFairsNewRouteImport.update({
+  id: '/fairs/new',
+  path: '/fairs/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFairsFairIdRoute =
+  AuthenticatedFairsFairIdRouteImport.update({
+    id: '/fairs/$fairId',
+    path: '/fairs/$fairId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFairsFairIdExhibitorsNewRoute =
+  AuthenticatedFairsFairIdExhibitorsNewRouteImport.update({
+    id: '/exhibitors/new',
+    path: '/exhibitors/new',
+    getParentRoute: () => AuthenticatedFairsFairIdRoute,
+  } as any)
+const AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute =
+  AuthenticatedFairsFairIdExhibitorsExhibitorIdRouteImport.update({
+    id: '/exhibitors/$exhibitorId',
+    path: '/exhibitors/$exhibitorId',
+    getParentRoute: () => AuthenticatedFairsFairIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/fairs/$fairId': typeof AuthenticatedFairsFairIdRouteWithChildren
+  '/fairs/new': typeof AuthenticatedFairsNewRoute
+  '/fairs/$fairId/exhibitors/$exhibitorId': typeof AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute
+  '/fairs/$fairId/exhibitors/new': typeof AuthenticatedFairsFairIdExhibitorsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/fairs/$fairId': typeof AuthenticatedFairsFairIdRouteWithChildren
+  '/fairs/new': typeof AuthenticatedFairsNewRoute
+  '/fairs/$fairId/exhibitors/$exhibitorId': typeof AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute
+  '/fairs/$fairId/exhibitors/new': typeof AuthenticatedFairsFairIdExhibitorsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/fairs/$fairId': typeof AuthenticatedFairsFairIdRouteWithChildren
+  '/_authenticated/fairs/new': typeof AuthenticatedFairsNewRoute
+  '/_authenticated/fairs/$fairId/exhibitors/$exhibitorId': typeof AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute
+  '/_authenticated/fairs/$fairId/exhibitors/new': typeof AuthenticatedFairsFairIdExhibitorsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/fairs/$fairId'
+    | '/fairs/new'
+    | '/fairs/$fairId/exhibitors/$exhibitorId'
+    | '/fairs/$fairId/exhibitors/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/fairs/$fairId'
+    | '/fairs/new'
+    | '/fairs/$fairId/exhibitors/$exhibitorId'
+    | '/fairs/$fairId/exhibitors/new'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/fairs/$fairId'
+    | '/_authenticated/fairs/new'
+    | '/_authenticated/fairs/$fairId/exhibitors/$exhibitorId'
+    | '/_authenticated/fairs/$fairId/exhibitors/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +150,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/fairs/new': {
+      id: '/_authenticated/fairs/new'
+      path: '/fairs/new'
+      fullPath: '/fairs/new'
+      preLoaderRoute: typeof AuthenticatedFairsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/fairs/$fairId': {
+      id: '/_authenticated/fairs/$fairId'
+      path: '/fairs/$fairId'
+      fullPath: '/fairs/$fairId'
+      preLoaderRoute: typeof AuthenticatedFairsFairIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/fairs/$fairId/exhibitors/new': {
+      id: '/_authenticated/fairs/$fairId/exhibitors/new'
+      path: '/exhibitors/new'
+      fullPath: '/fairs/$fairId/exhibitors/new'
+      preLoaderRoute: typeof AuthenticatedFairsFairIdExhibitorsNewRouteImport
+      parentRoute: typeof AuthenticatedFairsFairIdRoute
+    }
+    '/_authenticated/fairs/$fairId/exhibitors/$exhibitorId': {
+      id: '/_authenticated/fairs/$fairId/exhibitors/$exhibitorId'
+      path: '/exhibitors/$exhibitorId'
+      fullPath: '/fairs/$fairId/exhibitors/$exhibitorId'
+      preLoaderRoute: typeof AuthenticatedFairsFairIdExhibitorsExhibitorIdRouteImport
+      parentRoute: typeof AuthenticatedFairsFairIdRoute
+    }
   }
 }
 
+interface AuthenticatedFairsFairIdRouteChildren {
+  AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute: typeof AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute
+  AuthenticatedFairsFairIdExhibitorsNewRoute: typeof AuthenticatedFairsFairIdExhibitorsNewRoute
+}
+
+const AuthenticatedFairsFairIdRouteChildren: AuthenticatedFairsFairIdRouteChildren =
+  {
+    AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute:
+      AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute,
+    AuthenticatedFairsFairIdExhibitorsNewRoute:
+      AuthenticatedFairsFairIdExhibitorsNewRoute,
+  }
+
+const AuthenticatedFairsFairIdRouteWithChildren =
+  AuthenticatedFairsFairIdRoute._addFileChildren(
+    AuthenticatedFairsFairIdRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedFairsFairIdRoute: typeof AuthenticatedFairsFairIdRouteWithChildren
+  AuthenticatedFairsNewRoute: typeof AuthenticatedFairsNewRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedFairsFairIdRoute: AuthenticatedFairsFairIdRouteWithChildren,
+  AuthenticatedFairsNewRoute: AuthenticatedFairsNewRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

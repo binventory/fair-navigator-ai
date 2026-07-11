@@ -29,7 +29,7 @@ export const getFair = createServerFn({ method: "GET" })
     return row;
   });
 
-const fairInput = z.object({
+export const fairInputSchema = z.object({
   name: z.string().trim().min(1).max(120),
   location: z.string().trim().max(200).optional().nullable(),
   starts_at: z.string().datetime().optional().nullable(),
@@ -46,7 +46,7 @@ const fairInput = z.object({
 export const createFair = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
-    fairInput.extend({ org_id: z.string().uuid() }).parse(d),
+    fairInputSchema.extend({ org_id: z.string().uuid() }).parse(d),
   )
   .handler(async ({ data, context }) => {
     const { data: row, error } = await context.supabase
@@ -69,7 +69,7 @@ export const createFair = createServerFn({ method: "POST" })
 export const updateFair = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
-    fairInput.extend({ id: z.string().uuid() }).parse(d),
+    fairInputSchema.extend({ id: z.string().uuid() }).parse(d),
   )
   .handler(async ({ data, context }) => {
     const { id, ...patch } = data;
@@ -123,3 +123,6 @@ export const deleteFair = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+export type CreateFairInput = z.infer<typeof fairInputSchema> & { org_id: string };
+export type UpdateFairInput = z.infer<typeof fairInputSchema> & { id: string };
