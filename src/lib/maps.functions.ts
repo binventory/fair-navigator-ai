@@ -131,13 +131,16 @@ export const updateHotspot = createServerFn({ method: "POST" })
     hotspotInput.partial({ polygon: true }).extend({ id: z.string().uuid() }).parse(d),
   )
   .handler(async ({ data, context }) => {
-    const patch: Record<string, unknown> = {
-      booth_code: data.booth_code,
-      exhibitor_id: data.exhibitor_id ?? null,
-    };
-    if (data.polygon) patch.polygon = data.polygon;
     const { data: row, error } = await context.supabase
-      .from("map_hotspots").update(patch).eq("id", data.id).select().single();
+      .from("map_hotspots")
+      .update({
+        booth_code: data.booth_code,
+        exhibitor_id: data.exhibitor_id ?? null,
+        ...(data.polygon ? { polygon: data.polygon } : {}),
+      })
+      .eq("id", data.id)
+      .select()
+      .single();
     if (error) throw new Error(error.message);
     return row;
   });
