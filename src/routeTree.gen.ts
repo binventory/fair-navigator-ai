@@ -12,9 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FSlugRouteImport } from './routes/f.$slug'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as FSlugIndexRouteImport } from './routes/f.$slug.index'
+import { Route as FSlugScheduleRouteImport } from './routes/f.$slug.schedule'
+import { Route as FSlugMapRouteImport } from './routes/f.$slug.map'
 import { Route as AuthenticatedFairsNewRouteImport } from './routes/_authenticated/fairs.new'
 import { Route as AuthenticatedFairsFairIdRouteImport } from './routes/_authenticated/fairs.$fairId'
+import { Route as FSlugExhibitorsIndexRouteImport } from './routes/f.$slug.exhibitors.index'
+import { Route as FSlugExhibitorsExhibitorIdRouteImport } from './routes/f.$slug.exhibitors.$exhibitorId'
 import { Route as AuthenticatedFairsFairIdScheduleRouteImport } from './routes/_authenticated/fairs.$fairId.schedule'
 import { Route as AuthenticatedFairsFairIdMapRouteImport } from './routes/_authenticated/fairs.$fairId.map'
 import { Route as AuthenticatedFairsFairIdExhibitorsNewRouteImport } from './routes/_authenticated/fairs.$fairId.exhibitors.new'
@@ -34,10 +40,30 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FSlugRoute = FSlugRouteImport.update({
+  id: '/f/$slug',
+  path: '/f/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const FSlugIndexRoute = FSlugIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => FSlugRoute,
+} as any)
+const FSlugScheduleRoute = FSlugScheduleRouteImport.update({
+  id: '/schedule',
+  path: '/schedule',
+  getParentRoute: () => FSlugRoute,
+} as any)
+const FSlugMapRoute = FSlugMapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => FSlugRoute,
 } as any)
 const AuthenticatedFairsNewRoute = AuthenticatedFairsNewRouteImport.update({
   id: '/fairs/new',
@@ -49,6 +75,17 @@ const AuthenticatedFairsFairIdRoute =
     id: '/fairs/$fairId',
     path: '/fairs/$fairId',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const FSlugExhibitorsIndexRoute = FSlugExhibitorsIndexRouteImport.update({
+  id: '/exhibitors/',
+  path: '/exhibitors/',
+  getParentRoute: () => FSlugRoute,
+} as any)
+const FSlugExhibitorsExhibitorIdRoute =
+  FSlugExhibitorsExhibitorIdRouteImport.update({
+    id: '/exhibitors/$exhibitorId',
+    path: '/exhibitors/$exhibitorId',
+    getParentRoute: () => FSlugRoute,
   } as any)
 const AuthenticatedFairsFairIdScheduleRoute =
   AuthenticatedFairsFairIdScheduleRouteImport.update({
@@ -79,10 +116,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/f/$slug': typeof FSlugRouteWithChildren
   '/fairs/$fairId': typeof AuthenticatedFairsFairIdRouteWithChildren
   '/fairs/new': typeof AuthenticatedFairsNewRoute
+  '/f/$slug/map': typeof FSlugMapRoute
+  '/f/$slug/schedule': typeof FSlugScheduleRoute
+  '/f/$slug/': typeof FSlugIndexRoute
   '/fairs/$fairId/map': typeof AuthenticatedFairsFairIdMapRoute
   '/fairs/$fairId/schedule': typeof AuthenticatedFairsFairIdScheduleRoute
+  '/f/$slug/exhibitors/$exhibitorId': typeof FSlugExhibitorsExhibitorIdRoute
+  '/f/$slug/exhibitors/': typeof FSlugExhibitorsIndexRoute
   '/fairs/$fairId/exhibitors/$exhibitorId': typeof AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute
   '/fairs/$fairId/exhibitors/new': typeof AuthenticatedFairsFairIdExhibitorsNewRoute
 }
@@ -92,8 +135,13 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/fairs/$fairId': typeof AuthenticatedFairsFairIdRouteWithChildren
   '/fairs/new': typeof AuthenticatedFairsNewRoute
+  '/f/$slug/map': typeof FSlugMapRoute
+  '/f/$slug/schedule': typeof FSlugScheduleRoute
+  '/f/$slug': typeof FSlugIndexRoute
   '/fairs/$fairId/map': typeof AuthenticatedFairsFairIdMapRoute
   '/fairs/$fairId/schedule': typeof AuthenticatedFairsFairIdScheduleRoute
+  '/f/$slug/exhibitors/$exhibitorId': typeof FSlugExhibitorsExhibitorIdRoute
+  '/f/$slug/exhibitors': typeof FSlugExhibitorsIndexRoute
   '/fairs/$fairId/exhibitors/$exhibitorId': typeof AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute
   '/fairs/$fairId/exhibitors/new': typeof AuthenticatedFairsFairIdExhibitorsNewRoute
 }
@@ -103,10 +151,16 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/f/$slug': typeof FSlugRouteWithChildren
   '/_authenticated/fairs/$fairId': typeof AuthenticatedFairsFairIdRouteWithChildren
   '/_authenticated/fairs/new': typeof AuthenticatedFairsNewRoute
+  '/f/$slug/map': typeof FSlugMapRoute
+  '/f/$slug/schedule': typeof FSlugScheduleRoute
+  '/f/$slug/': typeof FSlugIndexRoute
   '/_authenticated/fairs/$fairId/map': typeof AuthenticatedFairsFairIdMapRoute
   '/_authenticated/fairs/$fairId/schedule': typeof AuthenticatedFairsFairIdScheduleRoute
+  '/f/$slug/exhibitors/$exhibitorId': typeof FSlugExhibitorsExhibitorIdRoute
+  '/f/$slug/exhibitors/': typeof FSlugExhibitorsIndexRoute
   '/_authenticated/fairs/$fairId/exhibitors/$exhibitorId': typeof AuthenticatedFairsFairIdExhibitorsExhibitorIdRoute
   '/_authenticated/fairs/$fairId/exhibitors/new': typeof AuthenticatedFairsFairIdExhibitorsNewRoute
 }
@@ -116,10 +170,16 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/f/$slug'
     | '/fairs/$fairId'
     | '/fairs/new'
+    | '/f/$slug/map'
+    | '/f/$slug/schedule'
+    | '/f/$slug/'
     | '/fairs/$fairId/map'
     | '/fairs/$fairId/schedule'
+    | '/f/$slug/exhibitors/$exhibitorId'
+    | '/f/$slug/exhibitors/'
     | '/fairs/$fairId/exhibitors/$exhibitorId'
     | '/fairs/$fairId/exhibitors/new'
   fileRoutesByTo: FileRoutesByTo
@@ -129,8 +189,13 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/fairs/$fairId'
     | '/fairs/new'
+    | '/f/$slug/map'
+    | '/f/$slug/schedule'
+    | '/f/$slug'
     | '/fairs/$fairId/map'
     | '/fairs/$fairId/schedule'
+    | '/f/$slug/exhibitors/$exhibitorId'
+    | '/f/$slug/exhibitors'
     | '/fairs/$fairId/exhibitors/$exhibitorId'
     | '/fairs/$fairId/exhibitors/new'
   id:
@@ -139,10 +204,16 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/dashboard'
+    | '/f/$slug'
     | '/_authenticated/fairs/$fairId'
     | '/_authenticated/fairs/new'
+    | '/f/$slug/map'
+    | '/f/$slug/schedule'
+    | '/f/$slug/'
     | '/_authenticated/fairs/$fairId/map'
     | '/_authenticated/fairs/$fairId/schedule'
+    | '/f/$slug/exhibitors/$exhibitorId'
+    | '/f/$slug/exhibitors/'
     | '/_authenticated/fairs/$fairId/exhibitors/$exhibitorId'
     | '/_authenticated/fairs/$fairId/exhibitors/new'
   fileRoutesById: FileRoutesById
@@ -151,6 +222,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  FSlugRoute: typeof FSlugRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -176,12 +248,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/f/$slug': {
+      id: '/f/$slug'
+      path: '/f/$slug'
+      fullPath: '/f/$slug'
+      preLoaderRoute: typeof FSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/f/$slug/': {
+      id: '/f/$slug/'
+      path: '/'
+      fullPath: '/f/$slug/'
+      preLoaderRoute: typeof FSlugIndexRouteImport
+      parentRoute: typeof FSlugRoute
+    }
+    '/f/$slug/schedule': {
+      id: '/f/$slug/schedule'
+      path: '/schedule'
+      fullPath: '/f/$slug/schedule'
+      preLoaderRoute: typeof FSlugScheduleRouteImport
+      parentRoute: typeof FSlugRoute
+    }
+    '/f/$slug/map': {
+      id: '/f/$slug/map'
+      path: '/map'
+      fullPath: '/f/$slug/map'
+      preLoaderRoute: typeof FSlugMapRouteImport
+      parentRoute: typeof FSlugRoute
     }
     '/_authenticated/fairs/new': {
       id: '/_authenticated/fairs/new'
@@ -196,6 +296,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/fairs/$fairId'
       preLoaderRoute: typeof AuthenticatedFairsFairIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/f/$slug/exhibitors/': {
+      id: '/f/$slug/exhibitors/'
+      path: '/exhibitors'
+      fullPath: '/f/$slug/exhibitors/'
+      preLoaderRoute: typeof FSlugExhibitorsIndexRouteImport
+      parentRoute: typeof FSlugRoute
+    }
+    '/f/$slug/exhibitors/$exhibitorId': {
+      id: '/f/$slug/exhibitors/$exhibitorId'
+      path: '/exhibitors/$exhibitorId'
+      fullPath: '/f/$slug/exhibitors/$exhibitorId'
+      preLoaderRoute: typeof FSlugExhibitorsExhibitorIdRouteImport
+      parentRoute: typeof FSlugRoute
     }
     '/_authenticated/fairs/$fairId/schedule': {
       id: '/_authenticated/fairs/$fairId/schedule'
@@ -266,21 +380,30 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface FSlugRouteChildren {
+  FSlugMapRoute: typeof FSlugMapRoute
+  FSlugScheduleRoute: typeof FSlugScheduleRoute
+  FSlugIndexRoute: typeof FSlugIndexRoute
+  FSlugExhibitorsExhibitorIdRoute: typeof FSlugExhibitorsExhibitorIdRoute
+  FSlugExhibitorsIndexRoute: typeof FSlugExhibitorsIndexRoute
+}
+
+const FSlugRouteChildren: FSlugRouteChildren = {
+  FSlugMapRoute: FSlugMapRoute,
+  FSlugScheduleRoute: FSlugScheduleRoute,
+  FSlugIndexRoute: FSlugIndexRoute,
+  FSlugExhibitorsExhibitorIdRoute: FSlugExhibitorsExhibitorIdRoute,
+  FSlugExhibitorsIndexRoute: FSlugExhibitorsIndexRoute,
+}
+
+const FSlugRouteWithChildren = FSlugRoute._addFileChildren(FSlugRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  FSlugRoute: FSlugRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
