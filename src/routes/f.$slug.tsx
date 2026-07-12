@@ -104,17 +104,22 @@ function FairLayout() {
   );
 }
 
+type TabTo =
+  | "/f/$slug"
+  | "/f/$slug/exhibitors"
+  | "/f/$slug/map"
+  | "/f/$slug/schedule";
+
 function TabLink({
   to,
   params,
   label,
 }: {
-  to: string;
+  to: TabTo;
   params: { slug: string };
   label: string;
 }) {
   return (
-    // @ts-expect-error TanStack Link typed paths accept these string unions at runtime
     <Link
       to={to}
       params={params}
