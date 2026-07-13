@@ -95,9 +95,9 @@ function ExhibitorDetail() {
       </Link>
 
       <header className="flex items-start gap-4">
-        {ex.logo_url ? (
+        {safeLogo ? (
           <img
-            src={ex.logo_url}
+            src={safeLogo}
             alt=""
             width={64}
             height={64}
@@ -121,15 +121,27 @@ function ExhibitorDetail() {
         <p className="whitespace-pre-line text-sm leading-relaxed">{ex.description}</p>
       )}
 
-      {(ex.website || socials.length > 0) && (
+      {(safeWebsite || socials.length > 0) && (
         <div className="space-y-2">
-          {ex.website && (
+          {safeWebsite && (
             <a
-              href={ex.website}
+              href={safeWebsite}
               target="_blank"
               rel="noopener noreferrer nofollow"
               className="block text-sm text-primary underline break-all"
             >
+              {safeWebsite}
+            </a>
+          )}
+          {socials.map((s) => (
+            <a
+              key={s.href}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              className="block text-sm text-primary underline break-all"
+            >
+
               {ex.website}
             </a>
           )}
