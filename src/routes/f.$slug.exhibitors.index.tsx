@@ -89,15 +89,16 @@ function ExhibitorsList() {
                 >
                   <Card className="h-full transition-colors hover:border-primary">
                     <CardContent className="flex gap-3 p-4">
-                      {ex.logo_url ? (
+                      {safeHttpUrl(ex.logo_url) ? (
                         <img
-                          src={ex.logo_url}
+                          src={safeHttpUrl(ex.logo_url)!}
                           alt=""
                           loading="lazy"
                           width={48}
                           height={48}
                           className="h-12 w-12 rounded object-contain"
                         />
+
                       ) : (
                         <div className="flex h-12 w-12 items-center justify-center rounded bg-muted text-xs text-muted-foreground">
                           {ex.company_name.charAt(0)}
