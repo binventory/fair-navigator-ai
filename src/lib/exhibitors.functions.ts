@@ -140,6 +140,8 @@ export const updateExhibitor = createServerFn({ method: "POST" })
         description: patch.description ?? null,
         website: patch.website ?? null,
         logo_url: patch.logo_url ?? null,
+        socials: patch.socials ?? null,
+
       })
       .eq("id", id)
       .select("id, org_id")
