@@ -64,8 +64,10 @@ export const exhibitorInputSchema = z.object({
   booth_code: z.string().trim().min(1).max(50),
   category: z.string().trim().max(100).optional().nullable(),
   description: z.string().trim().max(4000).optional().nullable(),
-  website: z.string().trim().url().max(500).optional().nullable().or(z.literal("").transform(() => null)),
-  logo_url: z.string().trim().url().max(500).optional().nullable().or(z.literal("").transform(() => null)),
+  website: optionalSafeHttpUrl,
+  logo_url: optionalSafeHttpUrl,
+  socials: socialsSchema,
+
   contact_name: z.string().trim().max(200).optional().nullable(),
   contact_email: z.string().trim().email().max(255).optional().nullable().or(z.literal("").transform(() => null)),
   contact_phone: z.string().trim().max(50).optional().nullable(),
