@@ -98,11 +98,17 @@ function SignInCard() {
           <Button type="submit" className="w-full" disabled={busy}>
             {busy ? "Signing in…" : "Sign in"}
           </Button>
+          <div className="text-center">
+            <Link to="/forgot-password" className="text-xs text-muted-foreground hover:underline">
+              {t.auth.forgotPassword}
+            </Link>
+          </div>
         </form>
       </CardContent>
     </Card>
   );
 }
+
 
 function SignUpCard() {
   const [email, setEmail] = useState("");
