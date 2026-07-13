@@ -3,6 +3,8 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useState, type FormEvent } from "react";
 import { listPublicExhibitors } from "@/lib/public.functions";
 import { t } from "@/lib/i18n/strings";
+import { safeHttpUrl } from "@/lib/url-safety";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
