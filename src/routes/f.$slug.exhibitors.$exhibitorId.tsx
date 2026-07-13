@@ -36,9 +36,10 @@ export const Route = createFileRoute("/f/$slug/exhibitors/$exhibitorId")({
           property: "og:description",
           content: loaderData.description ?? loaderData.company_name,
         },
-        ...(loaderData.logo_url
-          ? [{ property: "og:image", content: loaderData.logo_url }]
+        ...(safeHttpUrl(loaderData.logo_url)
+          ? [{ property: "og:image", content: safeHttpUrl(loaderData.logo_url)! }]
           : []),
+
       ],
     };
   },
