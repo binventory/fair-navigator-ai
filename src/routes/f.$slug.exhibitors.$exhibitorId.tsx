@@ -69,9 +69,8 @@ function normalizeSocials(raw: unknown): Social[] {
   if (!raw || typeof raw !== "object") return [];
   const out: Social[] = [];
   for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
-    if (typeof v === "string" && /^https?:\/\//i.test(v)) {
-      out.push({ label: k, href: v });
-    }
+    const href = safeHttpUrl(v);
+    if (href) out.push({ label: k, href });
   }
   return out;
 }
@@ -81,6 +80,9 @@ function ExhibitorDetail() {
   const { data: ex } = useSuspenseQuery(exQ(slug, exhibitorId));
   if (!ex) return null;
   const socials = normalizeSocials(ex.socials);
+  const safeLogo = safeHttpUrl(ex.logo_url);
+  const safeWebsite = safeHttpUrl(ex.website);
+
 
   return (
     <article className="space-y-6">
