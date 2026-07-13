@@ -142,9 +142,6 @@ function ExhibitorDetail() {
               className="block text-sm text-primary underline break-all"
             >
 
-              {ex.website}
-            </a>
-          )}
           {socials.map((s) => (
             <a
               key={s.href}
