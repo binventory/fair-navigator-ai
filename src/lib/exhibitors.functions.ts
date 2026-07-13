@@ -1,6 +1,36 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { isSafeHttpUrl, MAX_URL_LENGTH } from "@/lib/url-safety";
+
+/**
+ * Accept only http(s) URLs. Rejects javascript:, data:, vbscript:, file:,
+ * blob:, and malformed input. Empty string becomes null. Applied to
+ * `website`, `logo_url`, and every `socials` value.
+ */
+const safeHttpUrlSchema = z
+  .string()
+  .trim()
+  .max(MAX_URL_LENGTH)
+  .refine(isSafeHttpUrl, { message: "Must be an http(s) URL" });
+
+const optionalSafeHttpUrl = z
+  .union([safeHttpUrlSchema, z.literal("").transform(() => null), z.null()])
+  .optional()
+  .nullable();
+
+const ALLOWED_SOCIAL_KEYS = ["linkedin", "x", "instagram", "facebook", "youtube"] as const;
+export const socialsSchema = z
+  .object(
+    Object.fromEntries(
+      ALLOWED_SOCIAL_KEYS.map((k) => [k, safeHttpUrlSchema.optional()]),
+    ) as Record<(typeof ALLOWED_SOCIAL_KEYS)[number], z.ZodOptional<typeof safeHttpUrlSchema>>,
+  )
+  .strict()
+  .partial()
+  .optional()
+  .nullable();
+
 
 export const listExhibitors = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
