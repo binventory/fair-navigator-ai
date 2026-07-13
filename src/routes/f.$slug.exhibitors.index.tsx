@@ -3,6 +3,8 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useState, type FormEvent } from "react";
 import { listPublicExhibitors } from "@/lib/public.functions";
 import { t } from "@/lib/i18n/strings";
+import { safeHttpUrl } from "@/lib/url-safety";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -87,15 +89,16 @@ function ExhibitorsList() {
                 >
                   <Card className="h-full transition-colors hover:border-primary">
                     <CardContent className="flex gap-3 p-4">
-                      {ex.logo_url ? (
+                      {safeHttpUrl(ex.logo_url) ? (
                         <img
-                          src={ex.logo_url}
+                          src={safeHttpUrl(ex.logo_url)!}
                           alt=""
                           loading="lazy"
                           width={48}
                           height={48}
                           className="h-12 w-12 rounded object-contain"
                         />
+
                       ) : (
                         <div className="flex h-12 w-12 items-center justify-center rounded bg-muted text-xs text-muted-foreground">
                           {ex.company_name.charAt(0)}

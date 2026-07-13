@@ -2,6 +2,8 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { getPublicExhibitor } from "@/lib/public.functions";
 import { t } from "@/lib/i18n/strings";
+import { safeHttpUrl } from "@/lib/url-safety";
+
 
 const exQ = (slug: string, exhibitorId: string) =>
   queryOptions({
@@ -34,9 +36,10 @@ export const Route = createFileRoute("/f/$slug/exhibitors/$exhibitorId")({
           property: "og:description",
           content: loaderData.description ?? loaderData.company_name,
         },
-        ...(loaderData.logo_url
-          ? [{ property: "og:image", content: loaderData.logo_url }]
+        ...(safeHttpUrl(loaderData.logo_url)
+          ? [{ property: "og:image", content: safeHttpUrl(loaderData.logo_url)! }]
           : []),
+
       ],
     };
   },
@@ -66,9 +69,8 @@ function normalizeSocials(raw: unknown): Social[] {
   if (!raw || typeof raw !== "object") return [];
   const out: Social[] = [];
   for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
-    if (typeof v === "string" && /^https?:\/\//i.test(v)) {
-      out.push({ label: k, href: v });
-    }
+    const href = safeHttpUrl(v);
+    if (href) out.push({ label: k, href });
   }
   return out;
 }
@@ -78,6 +80,9 @@ function ExhibitorDetail() {
   const { data: ex } = useSuspenseQuery(exQ(slug, exhibitorId));
   if (!ex) return null;
   const socials = normalizeSocials(ex.socials);
+  const safeLogo = safeHttpUrl(ex.logo_url);
+  const safeWebsite = safeHttpUrl(ex.website);
+
 
   return (
     <article className="space-y-6">
@@ -90,9 +95,9 @@ function ExhibitorDetail() {
       </Link>
 
       <header className="flex items-start gap-4">
-        {ex.logo_url ? (
+        {safeLogo ? (
           <img
-            src={ex.logo_url}
+            src={safeLogo}
             alt=""
             width={64}
             height={64}
@@ -116,16 +121,16 @@ function ExhibitorDetail() {
         <p className="whitespace-pre-line text-sm leading-relaxed">{ex.description}</p>
       )}
 
-      {(ex.website || socials.length > 0) && (
+      {(safeWebsite || socials.length > 0) && (
         <div className="space-y-2">
-          {ex.website && (
+          {safeWebsite && (
             <a
-              href={ex.website}
+              href={safeWebsite}
               target="_blank"
               rel="noopener noreferrer nofollow"
               className="block text-sm text-primary underline break-all"
             >
-              {ex.website}
+              {safeWebsite}
             </a>
           )}
           {socials.map((s) => (
@@ -139,6 +144,7 @@ function ExhibitorDetail() {
               {s.label}: {s.href}
             </a>
           ))}
+
         </div>
       )}
     </article>
