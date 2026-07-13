@@ -71,6 +71,30 @@ export const t = {
     essentialOnly:
       "This page stores no cookies and no data on your device.",
   },
+  auth: {
+    forgotPassword: "Forgot password?",
+    resetTitle: "Reset your password",
+    resetDescription: "Enter your account email and we'll send a reset link.",
+    resetEmailLabel: "Email",
+    sendResetLink: "Send reset link",
+    sending: "Sending…",
+    resetGenericConfirmation:
+      "If an account exists for that email, we've sent a reset link. Check your inbox.",
+    backToSignIn: "Back to sign in",
+    newPasswordTitle: "Choose a new password",
+    newPasswordDescription: "Set a new password to finish signing in.",
+    newPasswordLabel: "New password",
+    confirmPasswordLabel: "Confirm password",
+    updatePassword: "Update password",
+    updating: "Updating…",
+    passwordsDoNotMatch: "Passwords do not match.",
+    passwordTooShort: "Password must be at least 8 characters.",
+    resetLinkInvalid:
+      "This reset link is invalid or has expired. Request a new one below.",
+    passwordUpdated: "Password updated. Redirecting…",
+    requestNewLink: "Request a new link",
+  },
 } as const;
 
 export type Strings = typeof t;
+
