@@ -99,7 +99,7 @@ export const createExhibitor = createServerFn({ method: "POST" })
         description: data.description ?? null,
         website: data.website ?? null,
         logo_url: data.logo_url ?? null,
-        socials: data.socials ?? null,
+        socials: data.socials ?? {},
 
       })
       .select()
@@ -140,7 +140,7 @@ export const updateExhibitor = createServerFn({ method: "POST" })
         description: patch.description ?? null,
         website: patch.website ?? null,
         logo_url: patch.logo_url ?? null,
-        socials: patch.socials ?? null,
+        socials: patch.socials ?? {},
 
       })
       .eq("id", id)
