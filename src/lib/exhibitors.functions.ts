@@ -99,6 +99,8 @@ export const createExhibitor = createServerFn({ method: "POST" })
         description: data.description ?? null,
         website: data.website ?? null,
         logo_url: data.logo_url ?? null,
+        socials: data.socials ?? null,
+
       })
       .select()
       .single();
