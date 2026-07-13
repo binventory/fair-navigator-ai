@@ -141,18 +141,10 @@ function ExhibitorDetail() {
               rel="noopener noreferrer nofollow"
               className="block text-sm text-primary underline break-all"
             >
-
-          {socials.map((s) => (
-            <a
-              key={s.href}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              className="block text-sm text-primary underline break-all"
-            >
               {s.label}: {s.href}
             </a>
           ))}
+
         </div>
       )}
     </article>
