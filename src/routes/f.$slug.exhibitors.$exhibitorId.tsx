@@ -2,6 +2,8 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { getPublicExhibitor } from "@/lib/public.functions";
 import { t } from "@/lib/i18n/strings";
+import { safeHttpUrl } from "@/lib/url-safety";
+
 
 const exQ = (slug: string, exhibitorId: string) =>
   queryOptions({
